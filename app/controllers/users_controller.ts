@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { UserValidator } from '#validators/user'
 import User from '#models/user'
+
 export default class UsersController {
     public async create({ request, response }: HttpContext) {
         const data = request.all()
