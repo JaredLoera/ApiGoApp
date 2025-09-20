@@ -32,6 +32,13 @@ router.group(() => {
         router.get('/reports', [reportsController, 'index'])
 
         router.post('/logout', [sessionController, 'destroy'])
+
+        router.get('/reports/:id', [reportsController, 'show'])
+
+        router.put('/reports/:id', [reportsController, 'update'])
+
+        router.get('/my-reports', [reportsController, 'getMyReports'])
+
     }).use(middleware.auth({ guards: ['api'] }))
 }).prefix('/api')
 

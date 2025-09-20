@@ -7,9 +7,13 @@ export default class ReportPhoto extends BaseModel {
 
   @column()
   declare reportId: number
-
+  
   @column()
   declare url: string
+
+  @column()
+  declare filename: string
+  
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
