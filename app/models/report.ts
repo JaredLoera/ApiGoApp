@@ -68,4 +68,10 @@ export default class Report extends BaseModel {
     return this.query().where('id', id).preload('reportType').preload('reportStatus').preload('user').preload('photos').first()
   }
 
+   static async getAllMyReportsDifferentByPending(user: User) {
+    return this.query().whereNot('reportStatusId', 1).whereNot('reportStatusId', 2).where('userId', user.id).preload('reportType').preload('reportStatus').preload('user').preload('photos')
+  }
+  static async getAllActiveReports(user: User) {
+    return this.query().whereNot('reportStatusId', 3).whereNot('reportStatusId', 4).where('userId', user.id).preload('reportType').preload('reportStatus').preload('user').preload('photos')
+  }
 }

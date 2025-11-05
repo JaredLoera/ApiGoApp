@@ -5,10 +5,10 @@ export default class extends BaseSeeder {
   async run() {
     // Write your database queries inside the run method
     await ReportStatus.createMany([
-      { name: 'Pendiente' },
-      { name: 'En Proceso' },
-      { name: 'Resuelto' },
-      { name: 'Rechazado' },
+      { name: 'Pendiente' },//verde
+      { name: 'En Proceso' },//amarillo
+      { name: 'Resuelto' },//azul
+      { name: 'Rechazado' },//rojo
     ])
   }
-}
+} 

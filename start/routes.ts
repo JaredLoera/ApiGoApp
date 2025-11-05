@@ -39,6 +39,10 @@ router.group(() => {
 
         router.get('/my-reports', [reportsController, 'getMyReports'])
 
+        router.get('/reportsfinishedpending', [reportsController, 'getAllReportsDifferentByPending'])
+
+        router.get('/profile', [userController, 'myProfile'])
+
     }).use(middleware.auth({ guards: ['api'] }))
 }).prefix('/api')
 
