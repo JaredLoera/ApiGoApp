@@ -10,6 +10,15 @@ import app from '@adonisjs/core/services/app'
 
 export default class ReportsController {
 
+    public async getAllReportsDifferentByPending({ auth, response }: HttpContext) {
+        const user = auth.user
+        if (!user) {
+            return response.status(401).json({ message: 'Unauthorized' })
+        }
+        const reports = await Report.getAllMyReportsDifferentByPending(user)
+        return response.status(200).json(reports)
+    }
+
     public async reportTypes({ }: HttpContext) {
         // Fetch all report types from the database
         const reportTypes = await ReportType.all()
@@ -75,7 +84,7 @@ export default class ReportsController {
         if (!user) {
             return response.status(401).json({ message: 'Unauthorized' })
         }
-        const reports = await Report.query().where('userId', user.id).preload('reportType').preload('reportStatus').preload('user')
+        const reports = await Report.getAllActiveReports(user)
         return response.status(200).json(reports)
     }
 

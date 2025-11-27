@@ -16,4 +16,12 @@ export default class UsersController {
             response.status(500).json({ message: 'Failed to create user' })
         }
     }
+    public async myProfile({ auth, response }: HttpContext) {
+        const user = auth.user
+        if (user) {
+            response.status(200).json(user)
+        } else {
+            response.status(404).json({ message: 'User not found' })
+        }
+    }
 }
