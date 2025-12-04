@@ -6,6 +6,7 @@ import ReportType from '#models/report_type'
 import ReportStatus from '#models/report_status'
 import User from '#models/user'
 import ReportPhoto from '#models/report_photo'
+import ReportEvent from './report_event.js'
 
 
 export default class Report extends BaseModel {
@@ -54,6 +55,12 @@ export default class Report extends BaseModel {
   })
   declare photos: HasMany<typeof ReportPhoto>
 
+  @hasMany(() => ReportEvent, {
+    foreignKey: 'reportId',
+    localKey: 'id'
+  })
+  declare events: HasMany<typeof ReportEvent>
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -61,17 +68,17 @@ export default class Report extends BaseModel {
   declare updatedAt: DateTime
 
   static async getAllReports() {
-    return this.query().preload('reportType').preload('reportStatus').preload('user').preload('photos')
+    return this.query().preload('reportType').preload('reportStatus').preload('user').preload('photos').preload('events')
   }
 
   static async getReportById(id: number) {
-    return this.query().where('id', id).preload('reportType').preload('reportStatus').preload('user').preload('photos').first()
+    return this.query().where('id', id).preload('reportType').preload('reportStatus').preload('user').preload('photos').preload('events').first()
   }
 
    static async getAllMyReportsDifferentByPending(user: User) {
-    return this.query().whereNot('reportStatusId', 1).whereNot('reportStatusId', 2).where('userId', user.id).preload('reportType').preload('reportStatus').preload('user').preload('photos')
+    return this.query().whereNot('reportStatusId', 1).whereNot('reportStatusId', 2).where('userId', user.id).preload('reportType').preload('reportStatus').preload('user').preload('photos').preload('events')
   }
   static async getAllActiveReports(user: User) {
-    return this.query().whereNot('reportStatusId', 3).whereNot('reportStatusId', 4).where('userId', user.id).preload('reportType').preload('reportStatus').preload('user').preload('photos')
+    return this.query().whereNot('reportStatusId', 3).whereNot('reportStatusId', 4).where('userId', user.id).preload('reportType').preload('reportStatus').preload('user').preload('photos').preload('events')
   }
 }
