@@ -12,6 +12,7 @@ import app from '@adonisjs/core/services/app'
 
 export default class ReportsController {
 
+
     public async getAllReportsDifferentByPending({ auth, response }: HttpContext) {
         const user = auth.user
         if (!user) {
@@ -29,7 +30,12 @@ export default class ReportsController {
         reportEvent.reportStatusId = validatedDataEvent.reportStatusId
         reportEvent.description = validatedDataEvent.description
         if (await reportEvent.save()) {
-            return response.status(201).json({ message: 'Report event created successfully' })
+            const report = await Report.find(validatedDataEvent.reportreportId)
+            if (report) {
+                report.reportStatusId = validatedDataEvent.reportStatusId
+                await report.save()
+            }
+             return response.status(201).json({ message: 'Report event created successfully' })
         } else {
             return response.status(500).json({ message: 'Failed to create report event' })
         }
