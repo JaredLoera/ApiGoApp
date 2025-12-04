@@ -1,8 +1,10 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ReportType from '#models/report_type'
 import ReportStatus from '#models/report_status'
+import ReportEvent from '#models/report_event'
 import Report from '#models/report'
 import { reportValidator } from '#validators/report'
+import { EventValidator } from '#validators/events'
 import ReportPhoto from '#models/report_photo'
 import { cuid } from '@adonisjs/core/helpers'
 import app from '@adonisjs/core/services/app'
@@ -17,6 +19,20 @@ export default class ReportsController {
         }
         const reports = await Report.getAllMyReportsDifferentByPending(user)
         return response.status(200).json(reports)
+    }
+
+    public async createReportEvent({request,response}:HttpContext) {
+        const { reportreportId, reportStatusId, description } = request.only(['reportreportId', 'reportStatusId', 'description'])
+      const validatedDataEvent  = await EventValidator.validate({ reportreportId, reportStatusId, description })
+        const reportEvent = new ReportEvent()
+        reportEvent.reportId = validatedDataEvent.reportreportId
+        reportEvent.reportStatusId = validatedDataEvent.reportStatusId
+        reportEvent.description = validatedDataEvent.description
+        if (await reportEvent.save()) {
+            return response.status(201).json({ message: 'Report event created successfully' })
+        } else {
+            return response.status(500).json({ message: 'Failed to create report event' })
+        }
     }
 
     public async reportTypes({ }: HttpContext) {

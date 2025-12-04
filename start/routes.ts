@@ -22,6 +22,9 @@ router.group(() => {
 
 
     router.group(() => {
+        //eventos 
+        router.post('/report-events', [reportsController, 'createReportEvent'])
+
         //REPORTES 
         router.get('/report-types', [reportsController, 'reportTypes'])
 
