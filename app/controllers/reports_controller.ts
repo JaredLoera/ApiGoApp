@@ -63,9 +63,10 @@ export default class ReportsController {
         const data = JSON.parse(request.body()['json']);
         const validatedData = await reportValidator.validate(data)
         const photos = request.files('photos', {
-            size: '2mb',
+            size: '90mb',
             extnames: ['jpg', 'png', 'jpeg', 'gif']
         })
+
         const report = new Report()
         report.userId = validatedData.user_id
         report.reportTypeId = validatedData.report_type_id
@@ -76,7 +77,8 @@ export default class ReportsController {
         if (await report.save()) {
             const reportPhoto = new ReportPhoto()
             for (let photo of photos) {
-                await photo.move(app.makePath('uploads'), {
+                // guardar en esta direccion public\uploads\api\
+                await photo.move(app.makePath('public/api/uploads'), {
                     name: `${cuid()}.${photo.extname}`
                 })
                     reportPhoto.url = `/uploads/${photo.fileName}`
