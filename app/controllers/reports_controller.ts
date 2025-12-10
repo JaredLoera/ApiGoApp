@@ -9,9 +9,7 @@ import ReportPhoto from '#models/report_photo'
 import { cuid } from '@adonisjs/core/helpers'
 import app from '@adonisjs/core/services/app'
 
-
 export default class ReportsController {
-
 
     public async getAllReportsDifferentByPending({ auth, response }: HttpContext) {
         const user = auth.user

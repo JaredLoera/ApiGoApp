@@ -3,5 +3,10 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build"
+  },
+  "paths": {
+    "App/*": [
+      "app/*"
+    ]
   }
 }
