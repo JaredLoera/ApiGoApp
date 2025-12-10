@@ -18,7 +18,13 @@ const reportsController = () => import('#controllers/reports_controller')
 
 router.group(() => {
     router.post('/users', [userController, 'create'])
-    router.post('/login', [sessionController, 'store'])
+    
+    
+    
+    router.post('/login', [sessionController, 'login'])
+
+
+    router.post('/2fa/verify', [sessionController, 'loginWithCode'])
 
 
     router.group(() => {
