@@ -10,9 +10,11 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
+
 const userController = () => import('#controllers/users_controller')
 const sessionController = () => import('#controllers/session_controller')
 const reportsController = () => import('#controllers/reports_controller')
+const pushNotificationService = () => import('#controllers/notification_pushes_controller')
 
 
 
@@ -20,14 +22,17 @@ router.group(() => {
     router.post('/users', [userController, 'create'])
     
     
-    
     router.post('/login', [sessionController, 'login'])
 
 
     router.post('/2fa/verify', [sessionController, 'loginWithCode'])
 
+    router.get('verify-email/:email', [userController, 'verifyEmail']).as('verifyemail')
 
     router.group(() => {
+
+
+        router.post('/subscribe', [pushNotificationService, 'subscribe'])
         //eventos 
         router.post('/report-events', [reportsController, 'createReportEvent'])
 

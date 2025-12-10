@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Código de verificación - LibraDesk</title>
+    <title>Correo de verificación</title>
     {{-- El CSS es idéntico, ya que Edge solo maneja la lógica, no el estilo. --}}
     <style>
         body {
@@ -88,6 +88,19 @@
             color: #999;
             font-size: 12px;
         }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #89ea66ff 0%, #3c816bff 100%);
+            color: white !important;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .button:hover {
+            opacity: 0.9;
+        }
         .footer a {
             color: #66eaacff;
         }
@@ -108,24 +121,24 @@
             
             <h2>¡Hola, {{fullName}}!</h2>
             
-            <p>Recibimos una solicitud para iniciar sesión en tu cuenta. Usa el siguiente código para completar la verificación:</p>
+            <p>Recibimos una solicitud para registrar en tu cuenta. Usa el siguiente boton para completar la verificación:</p>
             
-            <div class="code-box">
-               codigo
-            </div>
+           <a href="{{ signedUrl }}" class="button">
+                Verificar mi correo
+            </a>
             
             <div class="expiry-notice">
-                ⏰ Este código expira en <strong>10 minutos</strong>
+                ⏰ Esta URL expira en <strong>1 hora</strong>
             </div>
             
             <div class="security-notice">
                 <strong>🔒 Consejos de seguridad:</strong>
-                • Nunca compartas este código con nadie<br>
-                • Si no solicitaste este código, ignora este correo
+                • Nunca compartas codigos código con nadie<br>
+                • Si no solicitaste este correo, ignoralo
             </div>
         </div>
         <div class="footer">
-            <p>Si no intentaste iniciar sesión, puedes ignorar este mensaje de forma segura.</p>
+            <p>Si no intentaste registrar tu correo, puedes ignorar este mensaje de forma segura.</p>
             
            
             <p style="margin-top: 15px;">©  LibraDesk - Tu biblioteca digital personal</p>

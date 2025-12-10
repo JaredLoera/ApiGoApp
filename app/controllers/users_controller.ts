@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { UserValidator } from '#validators/user'
 import User from '#models/user'
 import mail from '@adonisjs/mail/services/main'
+import router from '@adonisjs/core/services/router'
 
 export default class UsersController {
 
@@ -9,20 +10,36 @@ export default class UsersController {
         const admins = await User.GetUsersAdmin()
         return response.status(200).json(admins)
     }
+     public async verifyEmail({ request, response, params }: HttpContext) {
+            if (!request.hasValidSignature()) {
+                return response.badRequest('Invalid or expired URL')
+        }
+        const email = params.email
+        const user = await User.findBy('email', email)
+        if (!user) {
+            return response.status(404).json({ message: 'User not found' })
+        }   
+        return response.status(200).json({ message: 'User verified successfully' })
+
+     }
+
     public async create({ request, response }: HttpContext) {
         const data = request.all()
         const validatedData = await UserValidator.validate(data)
         if(await User.findBy('email', validatedData.email)) {
             return response.status(400).json({ message: 'Email already exists' })
-        }
+        }            
         if(await User.create(validatedData)){
-              
+
+            //make signed url
+            const signedUrl = router.makeSignedUrl('verifyemail', { email: validatedData.email }, { expiresIn: '1h' })
+            
             await mail.send((message) => {
                 message
                   .from('ecoreporte@updates.buenasnochis.online')
                     .to(validatedData.email)
                     .subject('Welcome to GoApp!')
-                    .htmlView('emails/verify_email_html', { fullName: validatedData.full_name || 'User' })
+                    .htmlView('emails/verify_email_html', { fullName: validatedData.full_name || 'User', signedUrl: signedUrl })
               });
 
             response.status(201).json({ message: 'User created successfully' })
