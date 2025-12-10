@@ -39,5 +39,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare updatedAt: DateTime | null
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
+  
+  static GetUsersAdmin() {
+    return this.query().where('role_id', 1)
+  }
 
 }

@@ -52,6 +52,11 @@ router.group(() => {
 
         router.get('/profile', [userController, 'myProfile'])
 
+        router .delete('/users/:id', [userController, 'deleteUser'])
+        router.post('/admin/users', [userController, 'createAdmin'])
+        router.get('/admin/users', [userController, 'GetUsersAdmin'])
+        router.put('/users/:id', [userController, 'updateUser'])     
+
     }).use(middleware.auth({ guards: ['api'] }))
 }).prefix('/api')
 
